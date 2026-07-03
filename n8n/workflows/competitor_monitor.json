@@ -1,0 +1,17 @@
+{
+  "name": "Competitor Monitor",
+  "nodes": [
+    { "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 6 }] } },
+      "name": "Every 6h", "type": "n8n-nodes-base.scheduleTrigger", "position": [240, 300] },
+    { "parameters": { "url": "https://competitor.com", "responseFormat": "string" },
+      "name": "Fetch Site", "type": "n8n-nodes-base.httpRequest", "position": [460, 300] },
+    { "parameters": { "url": "http://backend:8000/api/v1/chat/{{$json.sim_id}}",
+        "method": "POST", "jsonParameters": true,
+        "bodyParametersJson": "{\"message\":\"Competitor update detected\"}" },
+      "name": "Notify Research Agent", "type": "n8n-nodes-base.httpRequest", "position": [680, 300] }
+  ],
+  "connections": {
+    "Every 6h": { "main": [[{ "node": "Fetch Site", "type": "main", "index": 0 }]] },
+    "Fetch Site": { "main": [[{ "node": "Notify Research Agent", "type": "main", "index": 0 }]] }
+  }
+}

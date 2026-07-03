@@ -1,0 +1,11 @@
+{
+  "name": "Email Notifications",
+  "nodes": [
+    { "parameters": { "path": "email_notifications", "httpMethod": "POST" },
+      "name": "Webhook", "type": "n8n-nodes-base.webhook", "position": [240, 300] },
+    { "parameters": { "fromEmail": "noreply@sim.ai", "toEmail": "={{$json.to}}",
+        "subject": "={{$json.subject}}", "text": "={{$json.body}}" },
+      "name": "Send Email", "type": "n8n-nodes-base.emailSend", "position": [460, 300] }
+  ],
+  "connections": { "Webhook": { "main": [[{ "node": "Send Email", "type": "main", "index": 0 }]] } }
+}
